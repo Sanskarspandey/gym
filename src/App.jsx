@@ -3,7 +3,9 @@ import AgencyPitchBar from './components/demo/AgencyPitchBar';
 import Navbar from './components/layout/Navbar';
 import Hero from './components/hero/Hero';
 import SmartConversionBar from './components/hero/SmartConversionBar';
+import EarlyProof from './components/social/EarlyProof';
 import StoryPillars from './components/story/StoryPillars';
+import WhyUsComparison from './components/comparison/WhyUsComparison';
 import FacilitiesGrid from './components/facilities/FacilitiesGrid';
 import ProgramsSection from './components/programs/ProgramsSection';
 import ClassSchedule from './components/schedule/ClassSchedule';
@@ -17,6 +19,7 @@ import GallerySection from './components/gallery/GallerySection';
 import CommunitySection from './components/community/CommunitySection';
 import FAQSection from './components/faq/FAQSection';
 import LocationSection from './components/location/LocationSection';
+import FinalCTA from './components/lead/FinalCTA';
 import Footer from './components/layout/Footer';
 import MobileBottomBar from './components/layout/MobileBottomBar';
 import WhatsAppButton from './components/layout/WhatsAppButton';
@@ -58,7 +61,7 @@ export default function App() {
         onNavigate={scrollToSection}
       />
 
-      {/* 2. Cinematic Hero Section */}
+      {/* 2. Cinematic Hero Section with 5-second value prop & trust line */}
       <Hero
         onOpenTrial={() => handleOpenTrial()}
         onNavigateMemberships={() => scrollToSection('memberships')}
@@ -72,80 +75,95 @@ export default function App() {
         onNavigateMemberships={() => scrollToSection('memberships')}
       />
 
-      {/* 4. Not Just a Gym. A Standard. */}
+      {/* 4. Strong Early Social Proof Moment (1,200+ People Started Here) */}
+      <EarlyProof
+        onOpenTrial={() => handleOpenTrial()}
+      />
+
+      {/* 5. Not Just a Gym. A Standard. */}
       <StoryPillars
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 5. Built for Serious Training (Facilities) */}
+      {/* 6. Why Choose Us? Competitive Comparison (IronForge vs Typical Gym) */}
+      <WhyUsComparison
+        onOpenTrial={() => handleOpenTrial()}
+      />
+
+      {/* 7. Built for Serious Training (Facilities) */}
       <FacilitiesGrid
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 6. Train Your Way (Programs) */}
+      {/* 8. Train Your Way (Programs) */}
       <ProgramsSection
         onOpenTrial={(progTitle) => handleOpenTrial(progTitle)}
       />
 
-      {/* 7. Interactive Weekly Class Schedule (WOW #7) */}
+      {/* 9. Interactive Weekly Class Schedule (WOW #7) */}
       <ClassSchedule />
 
-      {/* 8. Meet Your Coaches & Trainer Booking (WOW #4) */}
+      {/* 10. Meet Your Coaches & Trainer Booking (WOW #4) */}
       <TrainersSection />
 
-      {/* 9. Real People. Real Progress. Transformation Slider (WOW #6) */}
+      {/* 11. Real Progress: Draggable Transformation Slider (WOW #6) */}
       <TransformationsSection
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 10. Choose Your Commitment (Pricing, Checkout & Digital Pass - WOW #2 & WOW #8) */}
+      {/* 12. Choose Your Commitment (Pricing, Checkout & Digital Pass - WOW #2 & WOW #8) */}
       <PricingSection
         onNavigateSchedule={() => scrollToSection('schedule')}
       />
 
-      {/* 11. Interactive Fitness Calculator (WOW #3) */}
+      {/* 13. Interactive Fitness Calculator Lead Engine (WOW #3) */}
       <FitnessCalculator
         onOpenAssessmentWithData={handleOpenAssessment}
       />
 
-      {/* 12. Special Urgency Offer: 7-Day Free Pass */}
+      {/* 14. Special Urgency Offer: 7-Day Free Pass */}
       <SpecialOffer
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 13. Google Reviews & Social Proof */}
+      {/* 15. Google Reviews & Social Proof */}
       <GoogleReviews />
 
-      {/* 14. Cinematic Photo Gallery & Lightbox */}
+      {/* 16. Cinematic Photo Gallery & Lightbox */}
       <GallerySection
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 15. Community & Statistics Counters */}
+      {/* 17. Community & Statistics Counters */}
       <CommunitySection
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 16. Frequently Asked Questions */}
+      {/* 18. Frequently Asked Questions */}
       <FAQSection />
 
-      {/* 17. Find Your Training Ground (Location, Map, Hours) */}
+      {/* 19. Find Your Training Ground (Location, Map, Hours) */}
       <LocationSection />
 
-      {/* 18. Comprehensive Footer */}
+      {/* 20. Strong Final CTA Section (Your Stronger Self Starts Here) */}
+      <FinalCTA
+        onOpenTrial={() => handleOpenTrial()}
+      />
+
+      {/* 21. Comprehensive Footer */}
       <Footer
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 19. Mobile Sticky Bottom Conversion Bar (WOW #5) */}
+      {/* 22. Mobile Sticky Bottom Conversion Bar (WOW #5) */}
       <MobileBottomBar
         onOpenTrial={() => handleOpenTrial()}
       />
 
-      {/* 20. Floating WhatsApp Action (Desktop/Tablet) */}
+      {/* 23. Floating WhatsApp Action (Desktop/Tablet) */}
       <WhatsAppButton />
 
-      {/* MODAL 1: Free Trial Multi-Step Booking (WOW #1) */}
+      {/* MODAL 1: Free Trial Multi-Step Booking (01 → 05 Progress - WOW #1) */}
       {trialModalOpen && (
         <FreeTrialModal
           initialInterest={trialInterest}
@@ -153,7 +171,7 @@ export default function App() {
         />
       )}
 
-      {/* MODAL 2: Free 15-Min Fitness Assessment */}
+      {/* MODAL 2: Free 15-Min Fitness Assessment with Pre-filled Calculator Numbers */}
       {assessmentModalOpen && (
         <FreeAssessmentModal
           initialData={calculatorData}

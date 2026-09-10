@@ -24,10 +24,10 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
   ];
 
   const days = [
-    { label: "Today", sub: "Evening slot" },
-    { label: "Tomorrow", sub: "Most popular" },
-    { label: "In 2 Days", sub: "Standard slot" },
-    { label: "This Weekend", sub: "Saturday session" },
+    { label: "Today", sub: "Evening slot available" },
+    { label: "Tomorrow", sub: "Recommended slot" },
+    { label: "In 2 Days", sub: "Open platform access" },
+    { label: "This Weekend", sub: "Saturday community session" },
     { label: "Next Week", sub: "Flexible schedule" }
   ];
 
@@ -38,6 +38,8 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
     { label: "Evening (5:30 PM – 7:30 PM)", period: "High Voltage Team Vibe" },
     { label: "Night (8:00 PM – 9:30 PM)", period: "Post-Work Unwind" }
   ];
+
+  const stepsList = ["01", "02", "03", "04", "05"];
 
   const handleNext = (e) => {
     if (e) e.preventDefault();
@@ -51,8 +53,8 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
 
       // Celebrate with confetti
       confetti({
-        particleCount: 75,
-        spread: 60,
+        particleCount: 80,
+        spread: 70,
         origin: { y: 0.6 },
         colors: ['#CCFF00', '#ffffff', '#22c55e']
       });
@@ -62,7 +64,7 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
   const handleCalendar = () => {
     downloadCalendarInvite({
       title: `Free Trial Session at IRONFORGE Athletics`,
-      description: `Complimentary 1-Day Trial Pass. Program Interest: ${interest}. Booking ID: ${bookingId}`,
+      description: `Complimentary 1-Day Trial Pass. Program Focus: ${interest}. Booking ID: ${bookingId}`,
       location: gymInfo.location.fullAddress,
       dateStr: selectedDay,
       timeStr: selectedTime
@@ -75,45 +77,66 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="bg-iron-900 border border-lime/40 rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative max-h-[95vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+      <div className="bg-iron-900 border border-lime/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative max-h-[95vh] overflow-y-auto">
         
         {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-lg bg-iron-800 text-iron-400 hover:text-white transition-colors"
+          aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Progress Dots Header (Steps 1-4) */}
-        {step < 5 && (
-          <div className="mb-6">
-            <div className="flex items-center justify-between text-[10px] font-mono uppercase text-iron-400 mb-2">
-              <span className={step >= 1 ? 'text-lime font-bold' : ''}>1. Interest</span>
-              <span className={step >= 2 ? 'text-lime font-bold' : ''}>2. Day</span>
-              <span className={step >= 3 ? 'text-lime font-bold' : ''}>3. Time</span>
-              <span className={step >= 4 ? 'text-lime font-bold' : ''}>4. You</span>
-            </div>
-            <div className="w-full bg-iron-800 h-1.5 rounded-full overflow-hidden">
-              <div
-                className="bg-lime h-full transition-all duration-300"
-                style={{ width: `${(step / 4) * 100}%` }}
-              />
-            </div>
+        {/* 01 → 02 → 03 → 04 → 05 Progress Indicator */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between text-xs font-mono mb-2">
+            {stepsList.map((num, idx) => {
+              const stepIndex = idx + 1;
+              const isCurrent = step === stepIndex;
+              const isCompleted = step > stepIndex;
+              return (
+                <React.Fragment key={num}>
+                  <div className="flex items-center gap-1">
+                    <span className={`px-1.5 py-0.5 rounded text-[11px] font-bold ${
+                      isCurrent
+                        ? 'bg-lime text-iron-950 shadow-sm'
+                        : isCompleted
+                        ? 'text-lime bg-lime/10'
+                        : 'text-iron-500'
+                    }`}>
+                      {num}
+                    </span>
+                  </div>
+                  {idx < stepsList.length - 1 && (
+                    <span className={`text-xs ${isCompleted ? 'text-lime font-bold' : 'text-iron-700'}`}>
+                      →
+                    </span>
+                  )}
+                </React.Fragment>
+              );
+            })}
           </div>
-        )}
+
+          <div className="w-full bg-iron-800 h-1.5 rounded-full overflow-hidden">
+            <div
+              className="bg-lime h-full transition-all duration-300"
+              style={{ width: `${(step / 5) * 100}%` }}
+            />
+          </div>
+        </div>
 
         {/* STEP 1: Interest */}
         {step === 1 && (
-          <div className="space-y-4">
+          <div className="space-y-4 animate-fadeIn">
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 1 of 4</span>
+              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 01 of 05</span>
               <h3 className="text-2xl font-display font-black text-white uppercase mt-0.5">
                 What are you interested in?
               </h3>
               <p className="text-xs text-iron-400 mt-1">
-                Select your focus so we can assign the most relevant coach for your trial.
+                Select your focus so we can pair you with the best coach on your first day.
               </p>
             </div>
 
@@ -149,14 +172,14 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
 
         {/* STEP 2: Preferred Day */}
         {step === 2 && (
-          <div className="space-y-4">
+          <div className="space-y-4 animate-fadeIn">
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 2 of 4</span>
+              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 02 of 05</span>
               <h3 className="text-2xl font-display font-black text-white uppercase mt-0.5">
                 Choose Preferred Day
               </h3>
               <p className="text-xs text-iron-400 mt-1">
-                When would you like to experience the IronForge training floor?
+                Select when you want to visit our Anna Nagar training floor.
               </p>
             </div>
 
@@ -200,14 +223,14 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
 
         {/* STEP 3: Time Slot */}
         {step === 3 && (
-          <div className="space-y-4">
+          <div className="space-y-4 animate-fadeIn">
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 3 of 4</span>
+              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 03 of 05</span>
               <h3 className="text-2xl font-display font-black text-white uppercase mt-0.5">
-                Choose Time Slot
+                Choose Preferred Time
               </h3>
               <p className="text-xs text-iron-400 mt-1">
-                Anna Nagar facility is open from 5:30 AM to 10:30 PM.
+                Open from 5:30 AM to 10:30 PM with continuous coach presence.
               </p>
             </div>
 
@@ -242,7 +265,7 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
                 onClick={() => handleNext()}
                 className="flex-1 py-3.5 bg-lime text-iron-950 font-display font-black text-sm tracking-wider uppercase rounded-xl hover:bg-white transition-all shadow-[0_0_20px_rgba(204,255,0,0.25)] flex items-center justify-center gap-2"
               >
-                <span>Next: Enter Info</span>
+                <span>Next: Enter Details</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -251,9 +274,9 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
 
         {/* STEP 4: Contact Details */}
         {step === 4 && (
-          <form onSubmit={handleNext} className="space-y-4">
+          <form onSubmit={handleNext} className="space-y-4 animate-fadeIn">
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 4 of 4</span>
+              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 04 of 05</span>
               <h3 className="text-2xl font-display font-black text-white uppercase mt-0.5">
                 Where should we send your pass?
               </h3>
@@ -263,7 +286,7 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
             </div>
 
             <div>
-              <label className="block text-xs font-mono uppercase text-iron-400 mb-1">Your Name</label>
+              <label className="block text-xs font-mono uppercase text-iron-400 mb-1">Your Full Name</label>
               <input
                 type="text"
                 required
@@ -316,7 +339,7 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
           </form>
         )}
 
-        {/* STEP 5: CONFIRMATION (WOW #1) */}
+        {/* STEP 5: CONFIRMATION (05 of 05) */}
         {step === 5 && (
           <div className="text-center py-4 space-y-5 animate-fadeIn">
             <div className="w-16 h-16 rounded-full bg-lime/10 border-2 border-lime flex items-center justify-center mx-auto text-lime">
@@ -324,7 +347,7 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
             </div>
 
             <div>
-              <span className="text-xs font-mono uppercase tracking-widest text-lime">Booking Confirmed</span>
+              <span className="text-xs font-mono uppercase tracking-widest text-lime">Step 05 of 05 · Complete</span>
               <h3 className="text-4xl font-display font-black text-white uppercase mt-1">
                 YOU'RE IN. 🔥
               </h3>
@@ -357,7 +380,7 @@ export default function FreeTrialModal({ initialInterest = "", onClose }) {
               </div>
             </div>
 
-            {/* Two Key Action Buttons (As explicitly requested) */}
+            {/* Action Buttons */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <button
                 onClick={handleCalendar}

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { pricingPlans } from '../../data/pricing';
-import { Check, X, Flame, Sparkles, ArrowRight, ShieldCheck, HelpCircle } from 'lucide-react';
+import { Check, X, Flame, Sparkles, ArrowRight, ShieldCheck, HelpCircle, MessageSquare } from 'lucide-react';
 import { formatCurrency } from '../../utils/formatters';
+import { openWhatsApp } from '../../utils/whatsapp';
+import { gymInfo } from '../../data/gymInfo';
 import PlanComparisonModal from './PlanComparisonModal';
 import CheckoutModal from './CheckoutModal';
 
@@ -16,19 +18,20 @@ export default function PricingSection({ onNavigateSchedule }) {
     return plan.priceMonthly;
   };
 
-  const getSavingsLabel = () => {
-    if (billingCycle === "quarterly") return "billed ₹" + pricingPlans[1].priceQuarterly.toLocaleString() + " every 3 months (Save 15%)";
-    if (billingCycle === "annual") return "billed ₹" + pricingPlans[1].priceAnnual.toLocaleString() + " yearly (Save 25%)";
-    return "billed monthly · cancel anytime";
-  };
-
   const handleSelectFromComparison = (planId) => {
     setShowComparison(false);
     setCheckoutPlanId(planId);
   };
 
+  const handleTalkToCoach = () => {
+    openWhatsApp(
+      gymInfo.contact.whatsappNumber,
+      "Hi IRONFORGE, I'm trying to decide which membership tier (Starter, Performance, or Elite) fits my goals. Could a coach guide me?"
+    );
+  };
+
   return (
-    <section id="memberships" className="py-20 sm:py-28 bg-iron-950 relative">
+    <section id="memberships" className="py-20 sm:py-28 bg-iron-950 relative border-t border-iron-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -175,15 +178,39 @@ export default function PricingSection({ onNavigateSchedule }) {
           })}
         </div>
 
-        {/* Compare All Plans Trigger */}
-        <div className="mt-12 text-center">
-          <button
-            onClick={() => setShowComparison(true)}
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-iron-400 hover:text-lime transition-colors underline underline-offset-4"
-          >
-            <HelpCircle className="w-4 h-4" />
-            <span>Compare Full 18-Feature Amenity Matrix</span>
-          </button>
+        {/* Talk To A Coach & Compare Plan Buttons */}
+        <div className="mt-14 p-6 rounded-2xl bg-iron-900 border border-iron-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-lime/10 border border-lime/20 flex items-center justify-center text-lime shrink-0">
+              <MessageSquare className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-display font-bold text-base sm:text-lg text-white uppercase">
+                Not sure which plan is right for you?
+              </h4>
+              <p className="text-xs text-iron-400">
+                A head coach will analyze your schedule and recommend the most cost-effective tier.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => setShowComparison(true)}
+              className="px-4 py-2.5 bg-iron-850 hover:bg-iron-800 text-iron-300 rounded-lg text-xs font-mono uppercase tracking-wider transition-colors border border-iron-750 flex items-center gap-1.5"
+            >
+              <HelpCircle className="w-3.5 h-3.5 text-lime" />
+              <span>Compare All Features</span>
+            </button>
+
+            <button
+              onClick={handleTalkToCoach}
+              className="px-5 py-2.5 bg-green-600 hover:bg-green-500 text-white rounded-lg text-xs font-mono uppercase tracking-wider font-bold transition-colors flex items-center gap-1.5 shadow-sm"
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>TALK TO A COACH</span>
+            </button>
+          </div>
         </div>
 
       </div>

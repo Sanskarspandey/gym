@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, ArrowRight, Star, MapPin, ShieldCheck, ChevronDown, CheckCircle } from 'lucide-react';
+import { Flame, ArrowRight, Star, MapPin, ShieldCheck, ChevronDown, CheckCircle, Award } from 'lucide-react';
 import { gymInfo } from '../../data/gymInfo';
 
 export default function Hero({ onOpenTrial, onNavigateMemberships }) {
@@ -15,12 +15,12 @@ export default function Hero({ onOpenTrial, onNavigateMemberships }) {
         <img
           src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=2000&auto=format&fit=crop"
           alt="IronForge Athletics Training Floor"
-          className="w-full h-full object-cover object-center opacity-30 scale-105 transform animate-pulse-slow"
+          className="w-full h-full object-cover object-center opacity-35 scale-105 transform animate-pulse-slow"
         />
         {/* Multilayer Dark Gradients for dramatic lighting */}
         <div className="absolute inset-0 bg-gradient-to-t from-iron-950 via-iron-950/70 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-iron-950 via-iron-950/80 to-iron-950/60" />
-        <div className="absolute inset-0 bg-dark-mesh opacity-50" />
+        <div className="absolute inset-0 bg-dark-mesh opacity-60" />
       </div>
 
       {/* Hero Content Container */}
@@ -28,7 +28,7 @@ export default function Hero({ onOpenTrial, onNavigateMemberships }) {
         <div className="max-w-3xl space-y-6">
           
           {/* Location & Trust Pill */}
-          <div className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 bg-iron-900/80 backdrop-blur-md border border-iron-750 px-3.5 py-1.5 rounded-full text-xs font-medium text-iron-200 shadow-md">
+          <div className="inline-flex flex-wrap items-center justify-center lg:justify-start gap-2 bg-iron-900/90 backdrop-blur-md border border-iron-750 px-3.5 py-1.5 rounded-full text-xs font-medium text-iron-200 shadow-md">
             <span className="flex items-center gap-1 text-lime font-semibold">
               <MapPin className="w-3.5 h-3.5" />
               <span>Anna Nagar, Chennai</span>
@@ -79,8 +79,17 @@ export default function Hero({ onOpenTrial, onNavigateMemberships }) {
             </button>
           </div>
 
+          {/* Dedicated Hero Trust Line Beneath CTAs */}
+          <div className="pt-1 text-xs font-mono text-iron-400 flex items-center justify-center lg:justify-start gap-2">
+            <span className="text-yellow-400 font-bold">4.9★ Google Rating</span>
+            <span>·</span>
+            <span className="text-white font-medium">1,200+ Members Trained</span>
+            <span>·</span>
+            <span className="text-lime">Anna Nagar</span>
+          </div>
+
           {/* Micro Perks Strip */}
-          <div className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-iron-400 font-mono">
+          <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-iron-400 font-mono">
             <span className="flex items-center gap-1.5">
               <CheckCircle className="w-3.5 h-3.5 text-lime" /> Eleiko Competition Plates
             </span>
@@ -95,7 +104,7 @@ export default function Hero({ onOpenTrial, onNavigateMemberships }) {
 
         {/* Right Side Visual Stat Card / Social Proof Preview */}
         <div className="hidden lg:block w-full max-w-sm">
-          <div className="bg-iron-900/80 backdrop-blur-xl border border-iron-750 p-6 rounded-2xl shadow-2xl relative space-y-5">
+          <div className="bg-iron-900/85 backdrop-blur-xl border border-iron-750 p-6 rounded-2xl shadow-2xl relative space-y-5">
             <div className="absolute -top-3 right-6 bg-lime text-iron-950 text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
               Anna Nagar Facility
             </div>

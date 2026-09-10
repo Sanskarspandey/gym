@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Calculator, Flame, ArrowRight, Zap, Target, Activity } from 'lucide-react';
+import { Calculator, Flame, ArrowRight, Zap, Target, Activity, CheckCircle } from 'lucide-react';
 
 export default function FitnessCalculator({ onOpenAssessmentWithData }) {
   const [age, setAge] = useState(28);
@@ -36,7 +36,7 @@ export default function FitnessCalculator({ onOpenAssessmentWithData }) {
     }
 
     // BMR (Mifflin-St Jeor)
-    let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+    let bmr = Math.round((10 * weight) + (6.25 * height) - (5 * age));
     if (gender === "male") {
       bmr += 5;
     } else {
@@ -48,18 +48,22 @@ export default function FitnessCalculator({ onOpenAssessmentWithData }) {
 
     // Goal Caloric Target
     let targetCalories = tdee;
+    let goalLabel = "Maintenance";
     let goalRec = "";
     if (goal === "fat-loss") {
       targetCalories = tdee - 450;
-      goalRec = "Structured deficit designed to strip 0.5kg fat/week without muscle loss.";
+      goalLabel = "Fat Loss";
+      goalRec = "Targeted deficit designed to strip ~0.5kg fat/week without muscle breakdown.";
     } else if (goal === "muscle") {
       targetCalories = tdee + 350;
+      goalLabel = "Muscle Building";
       goalRec = "Hypertrophic surplus optimized for lean contractile tissue synthesis.";
     } else if (goal === "strength") {
       targetCalories = tdee + 200;
+      goalLabel = "Barbell Strength";
       goalRec = "Performance fuel supporting heavy central nervous system barbell recovery.";
     } else {
-      goalRec = "Maintenance calories to optimize metabolic homeostasis & athletic vigor.";
+      goalRec = "Maintenance calories to optimize metabolic homeostasis & athletic stamina.";
     }
 
     // Macros
@@ -73,7 +77,9 @@ export default function FitnessCalculator({ onOpenAssessmentWithData }) {
       bmi: bmiVal,
       bmiCategory,
       bmiColor,
+      bmr,
       tdee,
+      goalLabel,
       targetCalories,
       goalRec,
       protein: proteinGrams,
@@ -89,8 +95,10 @@ export default function FitnessCalculator({ onOpenAssessmentWithData }) {
       height,
       weight,
       bmi: results.bmi,
+      bmr: results.bmr,
+      tdee: results.tdee,
       targetCalories: results.targetCalories,
-      goal
+      goal: results.goalLabel
     });
   };
 
@@ -247,7 +255,7 @@ export default function FitnessCalculator({ onOpenAssessmentWithData }) {
 
           </div>
 
-          {/* Results & High-Converting CTA Column (5 cols) */}
+          {/* Results & High-Converting Qualified Lead Box (5 cols) */}
           <div className="lg:col-span-5 bg-iron-850 border border-iron-750 rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-6">
             
             <div className="space-y-4">
@@ -269,16 +277,23 @@ export default function FitnessCalculator({ onOpenAssessmentWithData }) {
                 </span>
               </div>
 
-              {/* Target Calories */}
-              <div className="bg-iron-900 p-4 rounded-xl border border-iron-800 space-y-1">
-                <span className="text-xs font-mono text-iron-400 block uppercase">Target Daily Energy</span>
+              {/* Target Calories & BMR/TDEE stats */}
+              <div className="bg-iron-900 p-4 rounded-xl border border-iron-800 space-y-2">
+                <div className="flex justify-between items-baseline">
+                  <span className="text-xs font-mono text-iron-400 uppercase">Target Daily Energy</span>
+                  <div className="flex gap-2 text-[10px] font-mono text-iron-400">
+                    <span>BMR: {results.bmr}</span>
+                    <span>•</span>
+                    <span>TDEE: {results.tdee}</span>
+                  </div>
+                </div>
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-display font-black text-lime">
                     {results.targetCalories.toLocaleString()}
                   </span>
                   <span className="text-xs font-mono text-iron-400">kcal / day</span>
                 </div>
-                <p className="text-[11px] text-iron-300 leading-normal pt-1">
+                <p className="text-[11px] text-iron-300 leading-normal">
                   {results.goalRec}
                 </p>
               </div>
@@ -300,11 +315,17 @@ export default function FitnessCalculator({ onOpenAssessmentWithData }) {
               </div>
             </div>
 
-            {/* High Converting Lead Pitch */}
+            {/* Qualified Lead Pitch Header & CTA */}
             <div className="pt-4 border-t border-iron-750 space-y-3">
-              <div className="text-xs text-iron-300">
-                Want our certified coaches to turn this into a custom 12-week workout and meal roadmap?
+              <div>
+                <h4 className="font-display font-black text-lg text-white uppercase">
+                  YOUR NUMBERS ARE JUST THE START.
+                </h4>
+                <p className="text-xs text-iron-300 mt-0.5">
+                  “Let our coaches turn this into a personalized 12-week training roadmap.”
+                </p>
               </div>
+
               <button
                 onClick={handleAssessmentTrigger}
                 className="w-full py-3.5 bg-lime hover:bg-white text-iron-950 font-display font-black text-sm uppercase tracking-wider rounded-xl transition-all duration-300 shadow-[0_0_20px_rgba(204,255,0,0.3)] flex items-center justify-center gap-2"

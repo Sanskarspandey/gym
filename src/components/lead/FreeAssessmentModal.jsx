@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, MessageSquare, ShieldCheck, Sparkles, Clock, Target } from 'lucide-react';
+import { X, CheckCircle, MessageSquare, ShieldCheck, Sparkles, Clock, Target, ArrowRight } from 'lucide-react';
 import { openWhatsApp } from '../../utils/whatsapp';
 import { gymInfo } from '../../data/gymInfo';
 import { generateBookingId } from '../../utils/formatters';
@@ -8,7 +8,7 @@ export default function FreeAssessmentModal({ initialData, onClose }) {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    goal: initialData?.goal ? (initialData.goal === 'fat-loss' ? 'Fat Loss' : 'Muscle Building') : 'General Fitness & Strength',
+    goal: initialData?.goal || 'Fat Loss',
     preferredTime: 'Morning (6 AM - 10 AM)'
   });
   const [submitted, setSubmitted] = useState(false);
@@ -16,11 +16,7 @@ export default function FreeAssessmentModal({ initialData, onClose }) {
 
   useEffect(() => {
     if (initialData?.goal) {
-      let g = 'General Fitness & Strength';
-      if (initialData.goal === 'fat-loss') g = 'Targeted Fat Loss';
-      if (initialData.goal === 'muscle') g = 'Muscle Hypertrophy';
-      if (initialData.goal === 'strength') g = 'Raw Barbell Strength';
-      setFormData(prev => ({ ...prev, goal: g }));
+      setFormData(prev => ({ ...prev, goal: initialData.goal }));
     }
   }, [initialData]);
 
@@ -35,19 +31,20 @@ export default function FreeAssessmentModal({ initialData, onClose }) {
   const handleWhatsApp = () => {
     let msg = `Hi IRONFORGE, I'd like to confirm my Free 15-Minute Fitness Assessment. Name: ${formData.name}, Goal: ${formData.goal}. Ref: ${refId}`;
     if (initialData?.bmi) {
-      msg += ` (BMI: ${initialData.bmi}, Calorie Target: ${initialData.targetCalories} kcal).`;
+      msg += ` (BMI: ${initialData.bmi}, Target Calories: ${initialData.targetCalories} kcal/day).`;
     }
     openWhatsApp(gymInfo.contact.whatsappNumber, msg);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
-      <div className="bg-iron-900 border border-lime/40 rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+      <div className="bg-iron-900 border border-lime/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
         
         {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-lg bg-iron-800 text-iron-400 hover:text-white transition-colors"
+          aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
@@ -62,14 +59,30 @@ export default function FreeAssessmentModal({ initialData, onClose }) {
               NOT SURE WHERE TO START?
             </h3>
             
-            <p className="text-xs sm:text-sm text-iron-300 mt-1 mb-5">
+            <p className="text-xs sm:text-sm text-iron-300 mt-1 mb-4">
               “Get a free 15-minute fitness assessment with one of our coaches.” We analyze your joint mobility, baseline strength, and recommend a concrete action plan.
             </p>
 
-            {initialData?.bmi && (
-              <div className="mb-4 p-3 rounded-xl bg-iron-850 border border-iron-750 text-xs text-iron-300 flex items-center justify-between">
-                <span>Calculated BMI: <strong className="text-lime">{initialData.bmi}</strong></span>
-                <span>Target Energy: <strong className="text-white">{initialData.targetCalories} kcal</strong></span>
+            {/* Automatically Pre-filled Qualified Metrics Display */}
+            {initialData && (
+              <div className="mb-4 p-3.5 rounded-2xl bg-iron-850 border border-lime/30 text-xs space-y-1.5 shadow-inner">
+                <span className="text-[10px] font-mono text-lime uppercase tracking-widest block font-bold">
+                  ✓ Pre-filled Qualified Lead Data:
+                </span>
+                <div className="grid grid-cols-3 gap-2 text-xs font-mono pt-1">
+                  <div>
+                    <span className="text-iron-400 block text-[10px]">GOAL</span>
+                    <span className="text-white font-bold">{formData.goal}</span>
+                  </div>
+                  <div>
+                    <span className="text-iron-400 block text-[10px]">BMI</span>
+                    <span className="text-lime font-bold">{initialData.bmi}</span>
+                  </div>
+                  <div>
+                    <span className="text-iron-400 block text-[10px]">EST. CALORIES</span>
+                    <span className="text-white font-bold">{initialData.targetCalories} / day</span>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -108,7 +121,7 @@ export default function FreeAssessmentModal({ initialData, onClose }) {
                   >
                     <option value="Fat Loss">Fat Loss & Conditioning</option>
                     <option value="Muscle Building">Muscle Building</option>
-                    <option value="Raw Barbell Strength">Raw Barbell Strength</option>
+                    <option value="Barbell Strength">Raw Barbell Strength</option>
                     <option value="Functional Fitness">Functional Longevity</option>
                     <option value="Not Sure">Not Sure Yet</option>
                   </select>
@@ -166,6 +179,12 @@ export default function FreeAssessmentModal({ initialData, onClose }) {
                 <span>Goal Focus:</span>
                 <span>{formData.goal}</span>
               </div>
+              {initialData?.bmi && (
+                <div className="flex justify-between items-center text-xs text-iron-300">
+                  <span>BMI / Target:</span>
+                  <span>{initialData.bmi} · {initialData.targetCalories} kcal/day</span>
+                </div>
+              )}
               <div className="flex justify-between items-center text-xs text-iron-300">
                 <span>Timing:</span>
                 <span>{formData.preferredTime}</span>
